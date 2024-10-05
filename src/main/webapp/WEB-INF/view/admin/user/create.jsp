@@ -85,13 +85,13 @@
                                     </div>
                                     <!-- config role -->
                                     
-                                    <!-- <div class="md-3 col-12 col-md-6">
+                                    <div class="md-3 col-12 col-md-6">
                                         <label class="form-label">Role:</label>
                                         <form:select class="form-select" path="role.name">
                                             <form:option value="ADMIN">ADMIN</form:option>
                                             <form:option value="USER">USER</form:option>
                                         </form:select>
-                                    </div> -->
+                                    </div>
 
                                     <div class="md-3 col-12 col-md-6">
                                         <label for="avartarFile" class="form-label">Avatar:</label>
