@@ -15,6 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 // import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
+import com.example.motobike.service.CustomUserDetailsService;
+import com.example.motobike.service.UserService;
+
 import jakarta.servlet.DispatcherType;
 
 @Configuration
@@ -25,10 +28,10 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    // @Bean
-    // public UserDetailsService userDetailsService(UserService userService) {
-    // return new CustomUserDetailsService(userService);
-    // }
+    @Bean
+    public UserDetailsService userDetailsService(UserService userService) {
+    return new CustomUserDetailsService(userService);
+    }
 
     // @Bean
     // public DaoAuthenticationProvider authProvider(
