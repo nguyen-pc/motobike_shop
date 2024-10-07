@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-// import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
+import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import com.example.motobike.service.CustomUserDetailsService;
 import com.example.motobike.service.UserService;
@@ -30,33 +30,32 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
-    return new CustomUserDetailsService(userService);
+        return new CustomUserDetailsService(userService);
     }
 
-    // @Bean
-    // public DaoAuthenticationProvider authProvider(
-    //         PasswordEncoder passwordEncoder,
-    //         UserDetailsService userDetailsService) {
-    //     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    //     authProvider.setUserDetailsService(userDetailsService);
-    //     authProvider.setPasswordEncoder(passwordEncoder);
-    //     authProvider.setHideUserNotFoundExceptions(false);
-    //     return authProvider;
-    // }
+    @Bean
+    public DaoAuthenticationProvider authProvider(
+            PasswordEncoder passwordEncoder,
+            UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setHideUserNotFoundExceptions(false);
+        return authProvider;
+    }
 
-    // @Bean
-    // public AuthenticationSuccessHandler customSuccessHandler() {
-    // return new CustomSuccessHandler();
-    // }
+    @Bean
+    public AuthenticationSuccessHandler customSuccessHandler() {
+        return new CustomSuccessHandler();
+    }
 
-    // @Bean
-    // public SpringSessionRememberMeServices rememberMeServices() {
-    // SpringSessionRememberMeServices rememberMeServices = new
-    // SpringSessionRememberMeServices();
-    // // optionally customize
-    // rememberMeServices.setAlwaysRemember(true);
-    // return rememberMeServices;
-    // }
+    @Bean
+    public SpringSessionRememberMeServices rememberMeServices() {
+        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
+        // optionally customize
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
+    }
 
     // @Bean
     // SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
