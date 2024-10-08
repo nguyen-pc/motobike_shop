@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.motobike.domain.Product;
+import com.example.motobike.domain.dto.RegisterDTO;
 import com.example.motobike.service.ProductService;
 
 @Controller
@@ -24,6 +25,17 @@ public class HomePageController {
         List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
         return "/client/homepage/show";
+    }
+
+    @GetMapping("/register")
+    public String getRegisterPage(Model model) {
+        model.addAttribute("registerUser", new RegisterDTO());
+        return "/client/auth/register";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage(Model model) {
+        return "/client/auth/login";
     }
 
 }
