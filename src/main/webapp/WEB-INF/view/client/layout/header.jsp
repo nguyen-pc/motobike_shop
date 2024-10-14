@@ -1,140 +1,72 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <!-- Navbar start -->
+        <div class="container">
+            <div class="container px-0">
+                <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                    <a href="/" class="navbar-brand">
+                        <h1 class="text-primary display-6">Laptopshop</h1>
+                    </a>
+                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars text-primary"></span>
+                    </button>
+                    <div class="collapse navbar-collapse bg-white justify-content-between mx-5" id="navbarCollapse">
+                        <div class="navbar-nav">
+                            <a href="/" class="nav-item nav-link active">Trang Chủ</a>
+                            <a href="/products" class="nav-item nav-link">Sản Phẩm</a>
 
-    <div class="search-popup">
-        <div class="search-popup-container">
+                        </div>
+                        <div class="d-flex m-3 me-0">
+                            <c:if test="${not empty pageContext.request.userPrincipal}">
+                                <a href="/cart" class="position-relative me-4 my-auto">
+                                    <i class="fa fa-shopping-bag fa-2x"></i>
+                                    <span
+                                        class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+                                        style="top: -5px; left: 15px; height: 20px; min-width: 20px;" id="sumCart">
+                                        ${sessionScope.sum}
+                                    </span>
+                                </a>
+                                <div class="dropdown my-auto">
+                                    <a href="#" class="dropdown" role="button" id="dropdownMenuLink"
+                                        data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="fas fa-user fa-2x"></i>
+                                    </a>
 
-          <form role="search" method="get" class="search-form" action="">
-            <input type="search" id="search-form" class="search-field" placeholder="Type and press enter" value="" name="s" />
-            <button type="submit" class="search-submit"><svg class="search"><use xlink:href="#search"></use></svg></button>
-          </form>
+                                    <ul class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="dropdownMenuLink">
+                                        <li class="d-flex align-items-center flex-column" style="min-width: 300px;">
+                                            <img style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;"
+                                                src="/images/avatar/${sessionScope.avatar}" />
+                                            <div class="text-center my-3">
+                                                <c:out value="${sessionScope.fullName}" />
+                                            </div>
+                                        </li>
 
-          <h5 class="cat-list-title">Browse Categories</h5>
-          
-          <ul class="cat-list">
-            <li class="cat-list-item">
-              <a href="#" title="Mobile Phones">Mobile Phones</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Smart Watches">Smart Watches</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Headphones">Headphones</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Accessories">Accessories</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Monitors">Monitors</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Speakers">Speakers</a>
-            </li>
-            <li class="cat-list-item">
-              <a href="#" title="Memory Cards">Memory Cards</a>
-            </li>
-          </ul>
+                                        <li><a class="dropdown-item" href="#">Quản lý tài khoản</a></li>
 
-        </div>
-    </div>
-    
-    <header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
-      <nav id="header-nav" class="navbar navbar-expand-lg px-3 mb-3">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">
-            <img src="/client/images/main-logo.png" class="logo">
-          </a>
-          <button class="navbar-toggler d-flex d-lg-none order-3 p-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <svg class="navbar-icon">
-              <use xlink:href="#navbar-icon"></use>
-            </svg>
-          </button>
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
-            <div class="offcanvas-header px-4 pb-0">
-              <a class="navbar-brand" href="/">
-                <img src="/client/images/main-logo.png" class="logo">
-              </a>
-              <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdNavbar"></button>
+                                        <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <form method="post" action="/logout">
+                                                <input type="hidden" name="${_csrf.parameterName}"
+                                                    value="${_csrf.token}" />
+                                                <button class="dropdown-item">Đăng xuất</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </c:if>
+                            <c:if test="${empty pageContext.request.userPrincipal}">
+                                <a href="/login" class="a-login position-relative me-4 my-auto">
+                                    Đăng nhập
+                                </a>
+                            </c:if>
+                        </div>
+                    </div>
+                </nav>
             </div>
-            <div class="offcanvas-body">
-              <ul id="navbar" class="navbar-nav text-uppercase justify-content-end align-items-center flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <a class="nav-link me-4 active" href="#billboard">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#company-services">Services</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#mobile-products">Products</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#smart-watches">Watches</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#yearly-sale">Sale</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link me-4" href="#latest-blog">Blog</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="index.html" class="dropdown-item">About</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Blog</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Shop</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Cart</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Checkout</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Single Post</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Single Product</a>
-                    </li>
-                    <li>
-                      <a href="index.html" class="dropdown-item">Contact</a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <div class="user-items ps-5">
-                    <ul class="d-flex justify-content-end list-unstyled">
-                      <li class="search-item pe-3">
-                        <a href="#" class="search-button">
-                          <svg class="search">
-                            <use xlink:href="#search"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li class="pe-3">
-                        <a href="#">
-                          <svg class="user">
-                            <use xlink:href="#user"></use>
-                          </svg>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="index.html">
-                          <svg class="cart">
-                            <use xlink:href="#cart"></use>
-                          </svg>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
-      </nav>
-    </header>
+        <!-- Navbar End -->
