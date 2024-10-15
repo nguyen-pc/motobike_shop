@@ -57,33 +57,66 @@ public class SecurityConfiguration {
         return rememberMeServices;
     }
 
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD,
+                                DispatcherType.INCLUDE)
+                        .permitAll()
+                        .requestMatchers("/", "/login", "/product/**", "/register",
+                                "/client/**", "/css/**", "/js/**",
+                                "/images/**")
+                        .permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated())
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .invalidSessionUrl("/logout?expired")
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false))
+                .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+                .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .successHandler(customSuccessHandler())
+                        .permitAll())
+                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+
+        return http.build();
+    }
     // @Bean
     // SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //     http
-    //             .authorizeHttpRequests(authorize -> authorize
-    //                     .dispatcherTypeMatchers(DispatcherType.FORWARD,
-    //                             DispatcherType.INCLUDE)
-    //                     .permitAll()
-    //                     .requestMatchers("/", "/login", "/product/**", "/register",
-    //                             "/client/**", "/css/**", "/js/**",
-    //                             "/images/**")
-    //                     .permitAll()
-    //                     .requestMatchers("/admin/**").hasRole("ADMIN")
-    //                     .anyRequest().authenticated())
-    //             .sessionManagement((sessionManagement) -> sessionManagement
-    //                     .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-    //                     .invalidSessionUrl("/logout?expired")
-    //                     .maximumSessions(1)
-    //                     .maxSessionsPreventsLogin(false))
-    //             .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
-    //             .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
-    //             .formLogin(formLogin -> formLogin
-    //                     .loginPage("/login")
-    //                     .failureUrl("/login?error")
-    //                     .successHandler(customSuccessHandler())
-    //                     .permitAll())
-    //             .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+    // // v6. lamda
+    // http
+    // .authorizeHttpRequests(authorize -> authorize
+    // .dispatcherTypeMatchers(DispatcherType.FORWARD,
+    // DispatcherType.INCLUDE)
+    // .permitAll()
 
-    //     return http.build();
+    // .requestMatchers("/", "/login", "/product/**", "/register", "/client/**",
+    // "/css/**", "/js/**",
+    // "/images/**")
+    // .permitAll()
+    // .requestMatchers("/admin/**").hasRole("ADMIN")
+    // .anyRequest().authenticated())
+    // .sessionManagement((sessionManagement) -> sessionManagement
+    // .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+    // .invalidSessionUrl("/logout?expired")
+    // .maximumSessions(1)
+    // .maxSessionsPreventsLogin(false))
+    // .logout(logout ->
+    // logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+    // .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
+    // .formLogin(formLogin -> formLogin
+    // .loginPage("/login")
+    // .failureUrl("/login?error")
+    // .successHandler(customSuccessHandler())
+    // .permitAll())
+    // .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
+
+    // return http.build();
     // }
+
 }

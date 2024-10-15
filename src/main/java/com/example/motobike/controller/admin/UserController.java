@@ -81,8 +81,9 @@ public class UserController {
     @GetMapping("/admin/user/update/{id}")
     public String getUpdateUserPage(Model model, @PathVariable long id) {
         User currentUser = this.userService.getUserById(id);
+        System.out.println("<<<<<" + currentUser);
         model.addAttribute("newUser", currentUser);
-        return "/admin/user/update";
+        return "admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
@@ -105,7 +106,7 @@ public class UserController {
         User user = new User();
         user.setId(id);
         model.addAttribute("newUser", user);
-        return "/admin/user/delete";
+        return "admin/user/delete";
     }
 
     @PostMapping("/admin/user/delete")
