@@ -5,15 +5,25 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.motobike.domain.Cart;
 import com.example.motobike.domain.Product;
+import com.example.motobike.domain.User;
+import com.example.motobike.repository.CartRepository;
 import com.example.motobike.repository.ProductRepository;
+import com.example.motobike.repository.UserRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final UserService userService;
+    private final CartRepository cartRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, UserService userService, CartRepository cartRepository) {
         this.productRepository = productRepository;
+        this.userService = userService;
+        this.cartRepository = cartRepository;
     }
 
     public List<Product> getAllProducts() {
@@ -30,6 +40,13 @@ public class ProductService {
 
     public void deleteProduct(long id) {
         this.productRepository.deleteById(id);
+    }
+
+    public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity) {
+        User user = this.userService.getUserByEmail(email);
+        if (user != null) {
+            Cart cart = this.cartRepository.findByUser(user);
+        }
     }
 
 }
