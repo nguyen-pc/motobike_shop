@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.motobike.domain.Product;
+import com.example.motobike.domain.User;
 import com.example.motobike.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,10 +40,16 @@ public class ItemController {
         long productId = id;
         String email = (String) session.getAttribute("email");
         this.productService.handleAddProductToCart(email, productId, session, 1);
+
+        return "redirect:/";
     }
 
     @GetMapping("/cart")
-    public String getCart(Model model) {
+    public String getCartPage(Model model, HttpServletRequest request) {
+        User currentUser = new User();
+        HttpSession session = request.getSession();
+        System.out.println(">>>>>>" + session);
+
         return "client/cart/show";
     }
 }

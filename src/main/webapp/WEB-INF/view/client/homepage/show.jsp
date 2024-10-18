@@ -59,11 +59,16 @@
                         <div class="image-holder">
                           <img src="/images/product/${product.image}" alt="product-item" class="img-fluid">
                         </div>
-                        <div class="cart-concern position-absolute">
-                          <div class="cart-button d-flex">
-                            <a href="#" class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></a>
+                        <form action="/add-product-to-cart/${product.id}" method="post">
+                          <div class="cart-concern position-absolute">
+                            <div class="cart-button d-flex">
+                              <input type="hidden"
+                              name="${_csrf.parameterName}"
+                              value="${_csrf.token}" /> 
+                              <button data-product-id="${product.id}"  class="btn btn-medium btn-black">Add to Cart<svg class="cart-outline"><use xlink:href="#cart-outline"></use></svg></button>
+                            </div>
                           </div>
-                        </div>
+                        </form>
                         <div class="card-detail d-flex justify-content-between align-items-baseline pt-3">
                           <h3 class="card-title text-uppercase">
                             <a href="/product/${product.id}">${product.name}</a>
