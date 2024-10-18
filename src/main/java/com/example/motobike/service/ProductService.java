@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.example.motobike.domain.Cart;
 import com.example.motobike.domain.CartDetail;
+import com.example.motobike.domain.Order;
+import com.example.motobike.domain.OrderDetail;
 import com.example.motobike.domain.Product;
 import com.example.motobike.domain.User;
 import com.example.motobike.repository.CartDetailRepository;
 import com.example.motobike.repository.CartRepository;
+import com.example.motobike.repository.OrderDetailRepository;
+import com.example.motobike.repository.OrderRepository;
 import com.example.motobike.repository.ProductRepository;
 import com.example.motobike.repository.UserRepository;
 
@@ -22,13 +26,19 @@ public class ProductService {
     private final UserService userService;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     public ProductService(ProductRepository productRepository, UserService userService, CartRepository cartRepository,
-            CartDetailRepository cartDetailRepository) {
+            CartDetailRepository cartDetailRepository, OrderRepository orderRepository,
+            OrderDetailRepository orderDetailRepository) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
+
     }
 
     public List<Product> getAllProducts() {
@@ -124,6 +134,53 @@ public class ProductService {
                 CartDetail currentCartDetail = cdOptional.get();
                 currentCartDetail.setQuantity(cartDetail.getQuantity());
                 this.cartDetailRepository.save(currentCartDetail);
+            }
+        }
+    }
+
+    public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress,
+            String receiverPhone) {
+
+        // step 1: get cart by user
+        Cart cart = this.cartRepository.findByUser(user);
+        if (cart != null) {
+            List<CartDetail> cartDetails = cart.getCartDetails();
+            if (cartDetails != null) {
+                // create order
+                Order order = new Order();
+                order.setUser(user);
+                order.setReceiverName(receiverName);
+                order.setReceiverAddress(receiverAddress);
+                order.setReceiverPhone(receiverPhone);
+                order.setStatus("PENDING");
+
+                double sum = 0;
+                for (CartDetail cd : cartDetails) {
+                    sum += cd.getPrice();
+                }
+                order.setTotalPrice(sum);
+                order = this.orderRepository.save(order);
+
+                // create order detail
+
+                for (CartDetail cd : cartDetails) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(order);
+                    orderDetail.setProduct(cd.getProduct());
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
+
+                    this.orderDetailRepository.save(orderDetail);
+                }
+
+                // step 2: delete cart_detail and cart
+                for (CartDetail cd : cartDetails) {
+                    this.cartDetailRepository.deleteById(cd.getId());
+                }
+                this.cartRepository.deleteById(cart.getId());
+
+                // step 3: update session
+                session.setAttribute("sum", 0);
             }
         }
     }
