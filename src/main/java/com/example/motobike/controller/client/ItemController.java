@@ -3,6 +3,11 @@ package com.example.motobike.controller.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.motobike.domain.Cart;
 import com.example.motobike.domain.CartDetail;
 import com.example.motobike.domain.Product;
+import com.example.motobike.domain.Product_;
 import com.example.motobike.domain.User;
+// import com.example.motobike.domain.Product_;
+import com.example.motobike.domain.dto.ProductCriteriaDTO;
 import com.example.motobike.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -124,7 +132,56 @@ public class ItemController {
     }
 
     @GetMapping("/thanks")
-    public String getThankYouPage(Model model){
+    public String getThankYouPage(Model model) {
         return "client/cart/thanks";
+    }
+
+    @GetMapping("/products")
+    public String getProductPage(Model model, HttpServletRequest request,
+            ProductCriteriaDTO productCriteriaDTO) {
+
+        int page = 1;
+        try {
+            if (productCriteriaDTO.getPage().isPresent()) {
+                page = Integer.parseInt(productCriteriaDTO.getPage().get());
+            } else {
+
+            }
+        } catch (Exception e) {
+
+        }
+
+        // check sort price
+        Pageable pageable = PageRequest.of(page - 1, 10);
+
+        if (productCriteriaDTO.getSort() != null &&
+                productCriteriaDTO.getSort().isPresent()) {
+            String sort = productCriteriaDTO.getSort().get();
+            if (sort.equals("gia-tang-dan")) {
+                pageable = PageRequest.of(page - 1, 10, Sort.by(Product_.PRICE).ascending());
+            } else if (sort.equals("gia-giam-dan")) {
+                pageable = PageRequest.of(page - 1, 10,
+                        Sort.by(Product_.PRICE).descending());
+            }
+        }
+
+        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable,
+                productCriteriaDTO);
+
+        List<Product> products = prs.getContent().size() > 0 ? prs.getContent()
+                : new ArrayList<Product>();
+
+        String qs = request.getQueryString();
+        if (qs != null && !qs.isBlank()) {
+            // remove page
+            qs = qs.replace("page=" + page, "");
+        }
+
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", prs.getTotalPages());
+        model.addAttribute("queryString", qs);
+
+        return "client/product/show";
     }
 }
