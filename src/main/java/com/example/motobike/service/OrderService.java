@@ -1,5 +1,7 @@
 package com.example.motobike.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,12 +15,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
 
-    public OrderService(OrderDetailRepository orderDetailRepository, OrderRepository orderRepository){
+    public OrderService(OrderDetailRepository orderDetailRepository, OrderRepository orderRepository) {
         this.orderDetailRepository = orderDetailRepository;
         this.orderRepository = orderRepository;
     }
 
-    public Page<Order> fetchAllOrders(Pageable page){
+    public Page<Order> fetchAllOrders(Pageable page) {
         return this.orderRepository.findAll(page);
+    }
+
+    public Optional<Order> fetchOrderById(long id) {
+        return this.orderRepository.findById(id);
     }
 }

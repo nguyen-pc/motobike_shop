@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.motobike.domain.Order;
@@ -45,6 +46,15 @@ public class OrderController {
         model.addAttribute("totalPages", orderPage.getTotalPages());
 
         return "admin/order/show";
+    }
+
+    @GetMapping("/admin/order/{id}")
+    public String getOrderDetailPage(Model model, @PathVariable long id){
+        Order order = this.orderService.fetchOrderById(id).get();
+        model.addAttribute("order", order);
+        model.addAttribute("id", id);
+        model.addAttribute("orderDetails", order.getOrderDetails());
+        return "admin/order/detail";
     }
 
 }
