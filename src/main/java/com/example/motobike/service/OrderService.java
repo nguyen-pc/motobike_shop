@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.motobike.domain.Order;
 import com.example.motobike.domain.OrderDetail;
+import com.example.motobike.domain.User;
 import com.example.motobike.repository.OrderDetailRepository;
 import com.example.motobike.repository.OrderRepository;
 
@@ -30,15 +31,28 @@ public class OrderService {
         return this.orderRepository.findById(id);
     }
 
-    public void deleteOrderById(long id){
+    public void deleteOrderById(long id) {
         Optional<Order> orderOptional = this.fetchOrderById(id);
-        if(orderOptional.isPresent()){
+        if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             List<OrderDetail> orderDetails = order.getOrderDetails();
-            for(OrderDetail orderDetail : orderDetails){
+            for (OrderDetail orderDetail : orderDetails) {
                 this.orderDetailRepository.deleteById(orderDetail.getId());
             }
         }
         this.orderRepository.deleteById(id);
+    }
+
+    public void updateOrder(Order order) {
+        Optional<Order> orderOptional = this.fetchOrderById(order.getId());
+        if (orderOptional.isPresent()) {
+            Order currentOrder = orderOptional.get();
+            currentOrder.setStatus(order.getStatus());
+            this.orderRepository.save(currentOrder);
+        }
+    }
+
+    public List<Order> fetchOrderByUser(User user) {
+        return this.orderRepository.findByUser(user);
     }
 }
