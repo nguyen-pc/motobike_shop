@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.motobike.domain.Order;
@@ -56,5 +58,20 @@ public class OrderController {
         model.addAttribute("orderDetails", order.getOrderDetails());
         return "admin/order/detail";
     }
+
+    @GetMapping("/admin/order/delete/{id}")
+    public String getDeleteOrderPage(Model model, @PathVariable long id){
+        model.addAttribute("id", id);
+        model.addAttribute("newOrder", new Order());
+        return "admin/order/delete";
+    }
+    @PostMapping("/admin/order/delete")
+    public String postDeleteOrder(@ModelAttribute("newOrder") Order order){
+        this.orderService.deleteOrderById(order.getId());
+        return "redirect:/admin/order";
+
+    }
+
+    
 
 }
