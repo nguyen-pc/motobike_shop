@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ministore</title>
+    <title>Motobike Shop</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,9 +46,9 @@
         <div class="container">
           <div class="row">
             <div class="display-header d-flex justify-content-between pb-3">
-              <h2 class="display-7 text-dark text-uppercase">Mobile Products</h2>
+              <h2 class="display-7 text-dark text-uppercase">Motobike Products</h2>
               <div class="btn-right">
-                <a href="index.html" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
+                <a href="/products" class="btn btn-medium btn-normal text-uppercase">Go to Shop</a>
               </div>
             </div>
             <div class="swiper product-swiper">

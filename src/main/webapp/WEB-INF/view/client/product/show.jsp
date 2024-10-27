@@ -119,7 +119,7 @@
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="checkbox" id="target-2"
                                                         value="SINHVIEN-VANPHONG">
-                                                    <label class="form-check-label" for="target-2">Đi học đi làm/label>
+                                                    <label class="form-check-label" for="target-2">Đi học đi làm</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="checkbox" id="target-3"

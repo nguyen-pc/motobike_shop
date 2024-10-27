@@ -101,22 +101,25 @@
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Factory:</label>
                                                     <form:select class="form-select" path="factory">
-                                                        <form:option value="YAMAHA">Yamaha </form:option>
-                                                        <form:option value="HONDA">Honda</form:option>
-                                                        <form:option value="SUZUKI">Suzuki</form:option>
+                                                        <form:option value="YAMAHA">ASAMA </form:option>
+                                                        <form:option value="HONDA">DETECH</form:option>
+                                                        <form:option value="SUZUKI">DK BIKE</form:option>
+                                                        <form:option value="SUZUKI">GO GO</form:option>
+                                                        <form:option value="SUZUKI">HOME SHELl</form:option>
+                                                        <form:option value="SUZUKI">KAZUKI</form:option>
                                         
                                                     </form:select>
                                                 </div>
                                                 <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Target:</label>
+                                                    <label class="form-label">Phong cach:</label>
                                                     <form:select class="form-select" path="target">
-                                                        <form:option value="XEDIEN">Xe Dien</form:option>
-                                                        <form:option value="XEXANG">Xe Xang
+                                                        <form:option value="XEDIEN">Dễ thương xinh xắn</form:option>
+                                                        <form:option value="XEXANG">Đi học đi làm
                                                         </form:option>
-                                                        <form:option value="50CC">Xe 50cc
+                                                        <form:option value="50CC">Gọn nhẹ tinh tế
                                                         </form:option>
-                                                        <form:option value="100CC">Xe 110cc</form:option>
-                                                        <form:option value="150CC">Xe 150cc</form:option>
+                                                        <form:option value="100CC">Mạnh mẽ thể thao</form:option>
+                                                        <form:option value="150CC">Sang chảnh, sành điệu</form:option>
                                                     </form:select>
                                                 </div>
                                                 <div class="mb-3 col-12 col-md-6">
